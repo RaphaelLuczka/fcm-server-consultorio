@@ -9,8 +9,6 @@ dotenv.config();
 const app = express();
 app.use(express.json());
 
-const admin = require("firebase-admin");
-
 const serviceAccount = JSON.parse(process.env.GOOGLE_APPLICATION_CREDENTIALS_JSON);
 
 admin.initializeApp({
