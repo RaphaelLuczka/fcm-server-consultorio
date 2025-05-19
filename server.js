@@ -9,12 +9,13 @@ dotenv.config();
 const app = express();
 app.use(express.json());
 
-const serviceAccount = JSON.parse(process.env.GOOGLE_APPLICATION_CREDENTIALS_JSON);
-
+const rawCred = JSON.parse(process.env.GOOGLE_APPLICATION_CREDENTIALS_JSON);
+rawCred.private_key = rawCred.private_key.replace(/\\\\n/g, "\n"); // converte \\n em \n
 admin.initializeApp({
-  credential: admin.credential.cert(serviceAccount),
-  databaseURL: "https://admin-consultorio-default-rtdb.firebaseio.com"
+  credential: admin.credential.cert(rawCred),
+  databaseURL: "https://admin-consultorio-default-rtdb.firebaseio.com",
 });
+
 
 const db = getDatabase();
 
@@ -53,3 +54,4 @@ const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {
   console.log(`🚀 Servidor rodando na porta ${PORT}`);
 });
+
