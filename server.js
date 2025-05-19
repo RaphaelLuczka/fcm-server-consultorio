@@ -3,11 +3,17 @@ import express from "express";
 import dotenv from "dotenv";
 import admin from "firebase-admin";
 import { getDatabase } from "firebase-admin/database";
+import cors from "cors";
+
 
 dotenv.config();
 
 const app = express();
 app.use(express.json());
+
+app.use(cors({
+  origin: "*", // ou coloque apenas "https://siteconsultorio.netlify.app" se quiser restringir
+}));
 
 const raw = JSON.parse(process.env.GOOGLE_APPLICATION_CREDENTIALS_JSON);
 
