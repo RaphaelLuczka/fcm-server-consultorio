@@ -29,26 +29,22 @@ admin.initializeApp({
 
 const db = getDatabase();
 
-// Rota de notificação automática
 app.post("/enviar-notificacao", async (req, res) => {
-  const { uid, nome, data, hora } = req.body;
+  const { nome, data, hora, token } = req.body;
 
-  try {
-    // Busca o token salvo no Firebase
-    const tokenSnapshot = await db.ref(`usuarios/${uid}/token`).once("value");
-    const token = tokenSnapshot.val();
+  if (!token) {
+    return res.status(400).json({ success: false, message: "Token ausente" });
+  }
 
-    if (!token) {
-      return res.status(404).send({ success: false, message: "Token não encontrado." });
-    }
+  const message = {
+    notification: {
+      title: "Nova consulta agendada",
+      body: `${nome} marcou uma consulta para ${data} às ${hora}.`
+    },
+    token: token
+  };
 
-    const message = {
-      notification: {
-        title: "Nova consulta agendada",
-        body: `${nome} marcou uma consulta para ${data} às ${hora}.`
-      },
-      token: token
-    };
+ 
 
   try {
     console.log("🔔 Enviando notificação para token:", token);
@@ -59,7 +55,8 @@ app.post("/enviar-notificacao", async (req, res) => {
     console.error("❌ Erro ao enviar notificação:", error);
     res.status(500).json({ success: false, error });
   }
-});;
+});
+
 
 // Inicia o servidor
 const PORT = process.env.PORT || 3000;
