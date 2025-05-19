@@ -50,14 +50,16 @@ app.post("/enviar-notificacao", async (req, res) => {
       token: token
     };
 
+  try {
+    console.log("🔔 Enviando notificação para token:", token);
     const response = await admin.messaging().send(message);
-    res.status(200).send({ success: true, response });
-
+    console.log("✅ Notificação enviada com sucesso:", response);
+    res.status(200).json({ success: true, response });
   } catch (error) {
     console.error("❌ Erro ao enviar notificação:", error);
-    res.status(500).send({ success: false, error });
+    res.status(500).json({ success: false, error });
   }
-});
+});;
 
 // Inicia o servidor
 const PORT = process.env.PORT || 3000;
