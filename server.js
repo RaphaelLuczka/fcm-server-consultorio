@@ -52,9 +52,9 @@ app.post("/enviar-notificacao", async (req, res) => {
     console.log("✅ Notificação enviada com sucesso:", response);
     res.status(200).json({ success: true, response });
   } catch (error) {
-    console.error("❌ Erro ao enviar notificação:", error);
-    res.status(500).json({ success: false, error });
-  }
+  console.error("❌ Erro ao enviar notificação:", error); // <- MELHOR log
+  res.status(500).json({ success: false, error: error.message, stack: error.stack });
+}
 });
 
 
