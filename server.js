@@ -15,6 +15,7 @@ app.use(cors({
   origin: "*", // ou coloque apenas "https://siteconsultorio.netlify.app" se quiser restringir
 }));
 
+
 const raw = JSON.parse(process.env.GOOGLE_APPLICATION_CREDENTIALS_JSON);
 
 // ⚠️ CONVERTE \\n para \n reais (corrige erro do PEM)
@@ -63,4 +64,3 @@ const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {
   console.log(`🚀 Servidor rodando na porta ${PORT}`);
 });
-
