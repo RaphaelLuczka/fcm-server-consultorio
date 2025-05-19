@@ -9,12 +9,15 @@ dotenv.config();
 const app = express();
 app.use(express.json());
 
-const rawCred = JSON.parse(process.env.GOOGLE_APPLICATION_CREDENTIALS_JSON);
-rawCred.private_key = rawCred.private_key.replace(/\\\\n/g, "\n"); // converte \\n em \n
+const raw = JSON.parse(process.env.GOOGLE_APPLICATION_CREDENTIALS_JSON);
+
+// ⚠️ CONVERTE \\n para \n reais (corrige erro do PEM)
+raw.private_key = raw.private_key.replace(/\\n/g, '\n');
 admin.initializeApp({
-  credential: admin.credential.cert(rawCred),
-  databaseURL: "https://admin-consultorio-default-rtdb.firebaseio.com",
+  credential: admin.credential.cert(raw),
+  databaseURL: "https://admin-consultorio-default-rtdb.firebaseio.com"
 });
+
 
 
 const db = getDatabase();
